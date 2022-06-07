@@ -20,17 +20,8 @@ class TodoListViewController: UITableViewController {
         super.viewDidLoad()
         
 
-
-        let newItem = Item()
-        newItem.title = "hola"
-        itemArray.append(newItem)
         // Cargo los items desde la memoria
-        
-        
-        
-//        if let items = defaults.array(forKey: "TodoListArray") as? [Item]{
-//            itemArray = items
-//        }
+        loadItems()
 
     }
     
@@ -104,6 +95,21 @@ class TodoListViewController: UITableViewController {
             print("error: \(error)")
         }
         tableView.reloadData()
+        
+    }
+    
+    
+    
+    func loadItems(){
+        do{
+            let data = try Data(contentsOf: dataFilePath!)
+            let decoder = PropertyListDecoder()
+            itemArray = try decoder.decode([Item].self, from: data)
+            
+        }catch{
+            print("error \(error)")
+        }
+        
         
     }
 }
